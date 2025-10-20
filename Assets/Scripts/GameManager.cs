@@ -51,4 +51,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public int getState() 
+    {
+        return (int)state;
+    }
 }
