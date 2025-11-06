@@ -1,16 +1,20 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 
 public class GameManager : MonoBehaviour
 {
-    enum GameState  { GAMEPLAY, PAUSE};
-    [SerializeField] GameState state;
-    bool hasChangedState  = false;
+    private State gameplay_state, pause_state;
+    [SerializeField] private State state;
+    private bool hasChangedState  = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        state = GameState.GAMEPLAY;
+        gameplay_state = new State(1.0f, "Gameplay");
+        pause_state = new State(0.0f, "Pause");
+        state = gameplay_state;
     }
 
     // Update is called once per frame
@@ -20,13 +24,13 @@ public class GameManager : MonoBehaviour
         {
             hasChangedState = true;
 
-            switch (state)
+            switch (state.getStateName())
             {
-                case GameState.GAMEPLAY:
-                    state = GameState.PAUSE;
+                case "Gameplay":
+                    state = pause_state;
                     break;
-                case GameState.PAUSE:
-                    state = GameState.GAMEPLAY;
+                case "Pause":
+                    state = gameplay_state;
                     break;
             }
         }
@@ -40,20 +44,13 @@ public class GameManager : MonoBehaviour
         {
             hasChangedState = false;
 
-            switch (state)
-            {
-                case GameState.GAMEPLAY:
-                    Time.timeScale = 1.0f;
-                    break;
-                case GameState.PAUSE:
-                    Time.timeScale = 0.0f;
-                    break;
-            }
+            Time.timeScale = state.getTimeScale();
+            
         }
     }
 
-    public int getState() 
+    public State getState() 
     {
-        return (int)state;
+        return state;
     }
 }
