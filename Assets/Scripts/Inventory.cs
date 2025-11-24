@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private List<string> items = new List<string>();
-    [SerializeField] private List<int[]> tree_pointers = new List<int[]>(); // Stores Left and Right Pointers
     [SerializeField] private GameManager game_manager;
 
     void Update()
@@ -20,34 +19,23 @@ public class Inventory : MonoBehaviour
 
     void addItem(string item) 
     {
-        items.Add(item);
-        int index = items.Count - 1;
-        for(int i = 0; i < items.Count;)
+        for (int i = 0; i < items.Count; i++)
         {
-            if (item.CompareTo(items[i]) <= 0)
-            {
-                if (tree_pointers[i][0] == 0) 
-                {
-                    tree_pointers[i][0] = index;
-                    tree_pointers.Add(new int[2]);
-                    return;
-                }
-                i = tree_pointers[i][0];
-                continue;
-            }
-            if (item.CompareTo(items[i]) > 0)
-            {
-                if (tree_pointers[i][1] == 0)
-                {
-                    tree_pointers[i][1] = index;
-                    tree_pointers.Add(new int[2]);
-                    return;
-                }
-                i = tree_pointers[i][1];
-                continue;
+            int c = item.CompareTo(items[i]);
 
+            if (c < 0)            
+            {
+                items.Insert(i, item);
+                return;
+            }
+            else if (c == 0)
+            {
+                Debug.Log("EQUAL");
+                
             }
         }
+        items.Add(item);
+
     }
 
     void removeItem(string item)
@@ -61,7 +49,7 @@ public class Inventory : MonoBehaviour
 
         if (collisionItem != null)
         {
-            items.Add(collisionItem.itemName);
+            addItem(collisionItem.itemName);
             Destroy(collisionItem.gameObject);
         }
     }
