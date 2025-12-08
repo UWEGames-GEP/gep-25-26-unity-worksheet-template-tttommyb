@@ -21,8 +21,6 @@ public class InventoryUI : MonoBehaviour
     // Update is called once per frame
     void RefreshInventory()
     {
-        //Debug.Log("Refresh Inventory UI");
-
         foreach(GameObject button in inventory_ui_buttons)
         {
            Destroy(button.gameObject);
@@ -39,13 +37,7 @@ public class InventoryUI : MonoBehaviour
 
             ui_button.gameObject.SetActive(true);
             ui_button.SetButton(inventory.GetItems()[i]);
-        }
-
-        for(int j = 0; j < inventory_ui_buttons.Count; j++)
-        {
-            //Debug.Log("Button: " + inventory_ui_buttons[j].GetComponent<InventoryUIButton>().getText() + " Item: " + inventory.GetItems()[j].name + " INDEX: " + j);
-        }
-        
+        }        
     }
 
     public void OnInventoryUIButton(int i) 
